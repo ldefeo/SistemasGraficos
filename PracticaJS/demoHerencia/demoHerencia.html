@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>Herencia</title>
+    <style>
+        *{
+            font-family: monospace;
+        }
+    </style>
+</head>    
+<body> 
+    <script>
+        function inheritPrototype(child,parent){ //esta funcion crea una copia del prototype del padre
+            var copyOfParent = Object.create(parent.prototype);
+
+            copyOfParent.constructor = child;
+            child.prototype = copyOfParent;
+        }
+
+        function Forma(){
+
+            var posicionX = 0; //atributo privado
+            var posicionY = 0;
+
+            this.rotacion = 0; //atributo publico
+            this.escala = 1;
+
+            var resetearPosicion = function(){ //metodo privado
+                posicionX = 0;
+                posicionY = 0;
+            }
+
+            var resetearRotacion = function(){
+                this.rotacion = 0;
+            }
+
+            this.mover = function(deltaX,deltaY){ //metodo publico
+                posicionX += deltaX;
+                posicionY += deltaY;
+            }
+
+            this.getPosicion = function(){
+                return [posicionX,posicionY];
+            }
+
+            this.resetear = function(){
+                resetearPosicion();
+                resetearRotacion();
+            }
+        }
+
+        function Rectangulo(){
+
+            Forma.call(this); //con la funcion call invocamos 
+            //al constructor de Forma y por ende establecemos que 
+            //Rectangulo hereda todo de Forma (subclase)
+
+            var ancho=0;
+        var alto=0;
+
+        this.color="";
+
+        var log=function(txt){ // es una funcion privada
+                console.log("log() Rectangulo, "+txt);
+        }
+
+        this.setDimensiones=function(w,h){
+                ancho=w;
+                alto=h;
+        }
+
+        this.esCuadrado=function(){
+
+                return (ancho==alto); 			// devuelve true o false
+        }
+
+        this.calcularArea=function(){
+                var result=ancho*alto;
+                log("se calculo el Area y dio "+result);
+                return result;
+        }
+
+    }
+
+    inheritPrototype(Rectangulo,Forma); //se debe definir antes de definir 
+    //las funciones de Rectangulo porque esta funcion sobreescribe el 
+    //prototype de Rectangulo
+
+    // *********   Hagamos una pruebas  ***************
+
+console.log("****** Probemos Forma **********");
+
+var f1=new Forma();
+
+console.log(">> f1.rotacion="+f1.rotacion);
+console.log(">> f1.escala="+f1.escala);
+console.log(">> f1.posicionX="+f1.posicionX+"  es un atributo privado, no lo puedo acceder !!!");
+
+f1.mover(10,5);
+
+console.log(">> ejecuto f1.mover(10,5)");
+console.log(">> f1.getPosicion()="+f1.getPosicion());
+
+f1.resetear();
+
+console.log(">> ejecuto f1.resetear()");
+console.log(">> f1.getPosicion()="+f1.getPosicion());
+console.log("                       ");
+
+
+console.log("****** Probemos Rectangulo **********");
+
+
+var r1=new Rectangulo();
+
+r1.setDimensiones(35,40);
+console.log(">> r1.setDimensiones(35,40)");
+
+console.log(">> r1.calcularArea()="+r1.calcularArea());
+console.log(">> r1.esCuadrado()="+r1.esCuadrado());
+
+console.log(">> r1.rotacion="+r1.rotacion);
+console.log(">> r1.escala="+r1.escala);
+
+console.log(">> r1.rotacion="+r1.rotacion+ "    es un atributo publico heredado de Forma");
+console.log(">> r1.rotacion="+r1.rotacion);
+
+</script>
+</body>
+</html>

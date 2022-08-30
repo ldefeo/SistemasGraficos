@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <style>
+        *{
+            font-family: monospace;
+        }
+    </style>
+</head>    
+<body> 
+<script>
+
+    var a1 = 1; //estan definidas en el scope global
+    var a2 = 2;
+
+    function f1(){
+        var count = 0;
+        count++;
+
+        function add(v){
+            return v+1;
+        }
+
+        function sub(v){
+            return v-1;
+        }
+        // el log nos permite imprimir en la consola
+        console.log("f1() count = "+count); //consola del navegador
+        console.log("f1() c = "+c); //c viene del scope global, 
+        //no importa que se defina luego de definir f1. 
+        //Lo que importa es que viene definida con c=3
+
+        console.log("add(a1) "+add(a1));
+        console.log("sub(a2) "+sub(a2));
+        console.log("add(c) "+add(c));
+        c++;
+
+    };
+
+    var c = 3;
+    f1(); //recien en esta linea es cuando se ejecuta todo el codigo anterior
+    console.log("c = "+c);
+    f1();
+
+</script>
+</body> 
+</html>
