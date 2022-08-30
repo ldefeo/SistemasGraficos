@@ -1,2 +1,2 @@
 # SistemasGraficos
-Sistemas graficos e la FIUBA
+Material de sistemas graficos de la facultad de ingenieria de la UBA.
