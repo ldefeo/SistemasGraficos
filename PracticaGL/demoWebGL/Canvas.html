@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Ejemplo 01 Canvas</title>
+    <style>
+        body{
+            background-color: gray;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+        canvas{
+            background-color: white;
+        }
+        textarea{
+            background-color: black;
+            background-color: white;
+        }
+        #titulo{
+            text-align: center;
+        }
+    </style>
+</head>    
+<body> 
+    <div id="titulo">
+        <h1>Sistemas Graficos</h1>
+        <h2>Ejemplo 01 Canvas y WebGL</h2>
+
+        <canvas id="My Canvas" width="900" height="500">
+            Your browser does not support the HTML5 canvas element.
+        </canvas>
+    </div>
+    <script>
+        // El canvas es la ventanita o rectangulo etc que vemos en una pagina 
+        //web o pantalla. Ahi es donde se coloca todo, por ejemplo el ajedrez.
+        function initWebGL(){
+            //obtengo referencia al canvas con id "My Canvas" que esta en el 
+            // documento html para poder manipularlo.
+            canvas = document.getElementById("My Canvas"); //document se refiere al documento html
+
+            try{
+                gl = canvas.getContext("webgl"); //con esto podemos acceder 
+                //a todos los metodos que nos provee webGL a traves de la 
+                //variable gl. Nos sirve como objeto raiz, para manipular graficos y eso.
+            }catch(e){
+                alert("Error al obtener el contexto");
+            }
+
+            if(gl){
+                //primeros comandos webGL
+                gl.clearColor(0.1,0.1,0.5,1.0); //con esto especificamos 
+                // que color queremos para nuestro canvas.
+                //El primer numero especifica cuanto rojo queremos, 
+                //el segundo el verde y el tercero el azul. El ultimo numero
+                // corresponde a la transparencia que como no la utilizamos 
+                //le especificamos con 1.0
+                gl.clear(gl.COLOR_BUFFER_BIT); //pinto el fondo de azul
+                //Con estas dos lineas borramos la pantalla y le establecemos un color.
+            }else{
+                alert("Error: su browser no soporta WebGL");
+                //el alert es equivalente a un console.log pero es un mensaje en rojo
+            }
+        }
+
+        window.onload = initWebGL; //window es la ventana del navegador. Cuando 
+        //el documento html este completamente cargado, el metodo onload 
+        //se va a ejecutar, y por ende, sera visible la ventana. 
+    </script>
+</body>
+</html>
