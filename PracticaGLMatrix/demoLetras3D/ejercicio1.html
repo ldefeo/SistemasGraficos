@@ -2,7 +2,7 @@
 <html>
 <head lang="en">
     <meta charset="UTF-8">
-    <title>Demo Letras 3D</title>
+    <title>Letras 3D</title>
     <link href='http://fonts.googleapis.com/css?family=Raleway:400,300,500' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" type="text/css" href="styles.css" />
 </head>
@@ -307,14 +307,44 @@ function init(){
 
     
     // ************** EDITAR A PARTIR DE AQUI *******************
-//Modelo letra Q
 
+    //El eje verde es y, el rojo es x y el azul es z
+    
+    //Modelo letra Q
 
-//Modelo letra R
+    m1 = mat4.create();
+    mat4.translate(m1,m1,vec3.fromValues(0,10,0));
+    mat4.rotate(m1,m1,Math.PI/4,vec3.fromValues(1,0,0));
+    //mat4.scale(m1,m1,vec3.fromValues(2,2,2));
 
+    modQ.applyMatrix(f(m1));
 
-//Modelo letra G
+    //Modelo letra R
+
+    m2 = mat4.create();
+    mat4.translate(m2,m2,vec3.fromValues(10,0,0));
+    mat4.rotate(m2,m2,Math.PI/4,vec3.fromValues(0,-1,0));
+    //mat4.scale(m2,m2,vec3.fromValues(2,2,3));
+
+    modR.applyMatrix(f(m2));
+
+    //Modelo letra G
 	
+    m3 = mat4.create();
+    mat4.translate(m3,m3,vec3.fromValues(0,0,10));
+    mat4.rotate(m3,m3,Math.PI/2,vec3.fromValues(-1,0,0));
+    //mat4.scale(m3,m3,vec3.fromValues(2,2,2));
+
+    modG.applyMatrix(f(m3));
+
+}
+
+initThreeJS();
+setupLights();
+cargarModelos(onLoadedModels);
+
+render();
+
 </script>
 
 </body>
