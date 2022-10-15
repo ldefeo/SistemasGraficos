@@ -6,9 +6,9 @@
     ------
 
     1) Modificar a función "generarSuperficie" para que tenga en cuenta los parametros filas y columnas al llenar el indexBuffer
-       Con esta modificación deberían poder generarse planos de N filas por M columnas
+       Con esta modificación deberían poder generarse planos de N filas por M columnas --> CHECK
 
-    2) Modificar la funcion "dibujarMalla" para que use la primitiva "triangle_strip"
+    2) Modificar la funcion "dibujarMalla" para que use la primitiva "triangle_strip" --> CHECK
 
     3) Crear nuevos tipos funciones constructoras de superficies
 
@@ -25,6 +25,12 @@
     
 */
 
+var ELECCION = 'esfera';
+
+var SUPERFICIES = {
+    plano : new Plano(3,3),
+    esfera : new Esfera(2)
+};
 
 var superficie3D;
 var mallaDeTriangulos;
@@ -36,7 +42,7 @@ var columnas=1;
 function crearGeometria(){
         
 
-    superficie3D=new Plano(3,3);
+    superficie3D=SUPERFICIES[ELECCION];
     mallaDeTriangulos=generarSuperficie(superficie3D,filas,columnas);
     
 }
@@ -65,6 +71,32 @@ function Plano(ancho,largo){
     }
 }
 
+
+function Esfera(radio){
+    this.getPosicion = function(u,v){
+        var x = radio*Math.cos(2*Math.PI*u)*Math.sin(Math.PI*v);
+        var z = radio*Math.sin(2*Math.PI*u)*Math.sin(Math.PI*v);
+        var y = radio*Math.cos(Math.PI*v);
+
+        return [x,y,z];
+    }
+
+    this.getNormal = function(u,v){
+
+        var coordenadas = this.getPosicion(u,v);
+
+        var x = coordenadas[0];
+        var y = coordenadas[1];
+        var z = coordenadas[2];
+
+        var normal = Math.sqrt([x,y,z].flatMap(x=>Math.pow(x,2)).reduce((a,b) => a+b,0));
+        return [x/normal,y/normal,z/normal];
+    }
+
+    this.getCoordenadasTextura = function(u,v){
+        return [u,v];
+    }
+}
 
 
 
@@ -102,17 +134,25 @@ function generarSuperficie(superficie,filas,columnas){
 
     // Buffer de indices de los triángulos
     
-    //indexBuffer=[];  
-    indexBuffer=[0,1,2,2,1,3]; // Estos valores iniciales harcodeados solo dibujan 2 triangulos, REMOVER ESTA LINEA!
+     
+    //indexBuffer=[0,1,2,2,1,3]; // Estos valores iniciales harcodeados solo dibujan 2 triangulos, REMOVER ESTA LINEA!
 
+    verticesPorFila = columnas+1;
+    
+    indexBuffer = [];
+        
     for (i=0; i < filas; i++) {
         for (j=0; j < columnas; j++) {
-
-            // completar la lógica necesaria para llenar el indexbuffer en funcion de filas y columnas
-            // teniendo en cuenta que se va a dibujar todo el buffer con la primitiva "triangle_strip" 
-            
+            indexBuffer.push(i * verticesPorFila + j);
+            indexBuffer.push((i+1) * verticesPorFila + j);
         }
+
+        indexBuffer.push(i * verticesPorFila + j);
+        indexBuffer.push((i+1) * verticesPorFila + j);
+
     }
+
+
 
     // Creación e Inicialización de los buffers
 
@@ -169,7 +209,7 @@ function dibujarMalla(mallaDeTriangulos){
         /*
             Aqui es necesario modificar la primitiva por triangle_strip
         */
-        gl.drawElements(gl.TRIANGLES, mallaDeTriangulos.webgl_index_buffer.numItems, gl.UNSIGNED_SHORT, 0);
+        gl.drawElements(gl.TRIANGLE_STRIP, mallaDeTriangulos.webgl_index_buffer.numItems, gl.UNSIGNED_SHORT, 0);
     }
     
     if (modo!="smooth") {
